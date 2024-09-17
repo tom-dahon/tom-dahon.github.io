@@ -7,7 +7,8 @@
 <body>
 <h1>Hello world !</h1>
 
-<div id="demo"></div>
+<div id="position"></div>
+<div id="watch"></div>
 
 </body>
 
@@ -15,7 +16,7 @@
 function success(pos) {
   var crd = pos.coords;
 
-  document.getElementById("demo").innerHTML = 
+  document.getElementById("position").innerHTML = 
     `Votre position actuelle est :<br/><br/>` +
             `Latitude : ${crd.latitude}<br/>
             Latitude : ${crd.latitude}<br/>
@@ -31,6 +32,24 @@ function error(err) {
   console.warn(`ERREUR (${err.code}): ${err.message}`);
 }
 
+function watchSuccess(pos) {
+    var crd = pos.coords;
+
+        document.getElementById("watch").innerHTML = 
+        `Votre position actuelle est :<br/><br/>` +
+                `Latitude : ${crd.latitude}<br/>
+                Latitude : ${crd.latitude}<br/>
+                Longitude : ${crd.longitude}<br/>
+                Altitude : ${crd.altitude}<br/>
+                Précision : ${crd.accuracy}<br/>
+                Vitesse : ${crd.speed}<br/>
+                Timestamp : ${pos.timestamp}`;
+}
+
+
+navigator.geolocation.watchPosition(watchSuccess, error);
+
 navigator.geolocation.getCurrentPosition(success, error);
+
 </script>
 </html>
