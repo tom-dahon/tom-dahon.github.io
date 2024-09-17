@@ -7,8 +7,73 @@
 <body>
 <h1>Hello world !</h1>
 
-<div id="position"></div>
-<div id="watch"></div>
+<style>
+    .coords {
+        display: flex;
+        justify-content: space-around; 
+        align-items: center;
+        width: 100%;            
+        margin: 0 auto;
+        text-align: center;
+    }
+    .coords div {
+        margin-top: 30px;
+        width: 28%;                 
+        border: 1px solid black;   
+        padding: 20px;               
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    .data-box {
+            border: 1px solid #000;
+            padding: 20px;
+            margin: 10px;
+            width: 300px;
+            text-align: center;
+        }
+
+        .accel {
+            display: flex;
+            justify-content: space-around; 
+        align-items: center;
+        width: 100%;            
+        margin: 0 auto;
+        text-align: center;
+        }
+</style>
+
+<div class="coords">
+    <div id="position"></div>
+    <div id="watch"></div>
+</div>
+
+<h1>Orientation et Mouvement du Smartphone</h1>
+
+    <div class="accel">
+        <div class="data-box">
+            <h2>Orientation</h2>
+            <p>Alpha: <span id="alpha">0</span>°</p>
+            <p>Beta: <span id="beta">0</span>°</p>
+            <p>Gamma: <span id="gamma">0</span>°</p>
+        </div>
+    
+        <div class="data-box">
+            <h2>Accélération</h2>
+            <p>Acc X: <span id="acc-x">0</span> m/s²</p>
+            <p>Acc Y: <span id="acc-y">0</span> m/s²</p>
+            <p>Acc Z: <span id="acc-z">0</span> m/s²</p>
+        </div>
+    
+        <div class="data-box">
+            <h2>Accélération de Rotation</h2>
+            <p>Rotation Alpha: <span id="rotation-alpha">0</span> rad/s²</p>
+            <p>Rotation Beta: <span id="rotation-beta">0</span> rad/s²</p>
+            <p>Rotation Gamma: <span id="rotation-gamma">0</span> rad/s²</p>
+        </div>
+    </div>
 
 </body>
 
@@ -17,9 +82,8 @@ function success(pos) {
   var crd = pos.coords;
 
   document.getElementById("position").innerHTML = 
-    `Votre position actuelle est :<br/><br/>` +
+    `Votre position actuelle avec pos est :<br/><br/>` +
             `Latitude : ${crd.latitude}<br/>
-            Latitude : ${crd.latitude}<br/>
             Longitude : ${crd.longitude}<br/>
             Altitude : ${crd.altitude}<br/>
             Précision : ${crd.accuracy}<br/>
@@ -36,9 +100,8 @@ function watchSuccess(pos) {
     var crd = pos.coords;
 
         document.getElementById("watch").innerHTML = 
-        `Votre position actuelle est :<br/><br/>` +
+        `Votre position actuelle avec watch est :<br/><br/>` +
                 `Latitude : ${crd.latitude}<br/>
-                Latitude : ${crd.latitude}<br/>
                 Longitude : ${crd.longitude}<br/>
                 Altitude : ${crd.altitude}<br/>
                 Précision : ${crd.accuracy}<br/>
@@ -50,6 +113,24 @@ function watchSuccess(pos) {
 navigator.geolocation.watchPosition(watchSuccess, error);
 
 navigator.geolocation.getCurrentPosition(success, error);
+
+// Gestion de l'orientation de l'appareil
+window.addEventListener('deviceorientation', (event) => {
+            document.getElementById('alpha').textContent = event.alpha.toFixed(2);
+            document.getElementById('beta').textContent = event.beta.toFixed(2);
+            document.getElementById('gamma').textContent = event.gamma.toFixed(2);
+        });
+
+        // Gestion des mouvements de l'appareil
+        window.addEventListener('devicemotion', (event) => {
+            document.getElementById('acc-x').textContent = event.acceleration.x ? event.acceleration.x.toFixed(2) : 0;
+            document.getElementById('acc-y').textContent = event.acceleration.y ? event.acceleration.y.toFixed(2) : 0;
+            document.getElementById('acc-z').textContent = event.acceleration.z ? event.acceleration.z.toFixed(2) : 0;
+
+            document.getElementById('rotation-alpha').textContent = event.rotationRate.alpha ? event.rotationRate.alpha.toFixed(2) : 0;
+            document.getElementById('rotation-beta').textContent = event.rotationRate.beta ? event.rotationRate.beta.toFixed(2) : 0;
+            document.getElementById('rotation-gamma').textContent = event.rotationRate.gamma ? event.rotationRate.gamma.toFixed(2) : 0;
+        });
 
 </script>
 </html>
