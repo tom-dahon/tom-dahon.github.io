@@ -43,6 +43,20 @@
         margin: 0 auto;
         text-align: center;
         }
+
+        canvas {
+            border: 2px solid #000;
+            display: block;
+            margin: 20px auto;
+            touch-action: none; /* Empêche le comportement par défaut du navigateur pour le zoom ou le scroll */
+        }
+        .info {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .info p {
+            margin: 5px 0;
+        }
 </style>
 
 <div class="coords">
@@ -73,6 +87,12 @@
             <p>Rotation Beta: <span id="rotation-beta">0</span> rad/s²</p>
             <p>Rotation Gamma: <span id="rotation-gamma">0</span> rad/s²</p>
         </div>
+    </div>
+
+    <div class="info">
+        <h1>Événements Tactiles et Dessin</h1>
+        <p>Type d'événement : <span id="event-type">-</span></p>
+        <p>Position Touchée : X: <span id="touch-x">0</span>, Y: <span id="touch-y">0</span></p>
     </div>
 
 </body>
@@ -130,6 +150,61 @@ window.addEventListener('deviceorientation', (event) => {
             document.getElementById('rotation-alpha').textContent = event.rotationRate.alpha ? event.rotationRate.alpha.toFixed(2) : 0;
             document.getElementById('rotation-beta').textContent = event.rotationRate.beta ? event.rotationRate.beta.toFixed(2) : 0;
             document.getElementById('rotation-gamma').textContent = event.rotationRate.gamma ? event.rotationRate.gamma.toFixed(2) : 0;
+        });
+
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const eventTypeDisplay = document.getElementById('event-type');
+        const touchXDisplay = document.getElementById('touch-x');
+        const touchYDisplay = document.getElementById('touch-y');
+
+        let isDrawing = false;
+
+        function draw(x, y) {
+            ctx.fillStyle = '#000';
+            ctx.beginPath();
+            ctx.arc(x, y, 5, 0, Math.PI * 2); 
+            ctx.fill();
+        }
+
+        canvas.addEventListener('touchstart', function(event) {
+            eventTypeDisplay.textContent = 'touchstart';
+
+            const touch = event.touches[0];
+            const x = touch.clientX - canvas.offsetLeft;
+            const y = touch.clientY - canvas.offsetTop;
+
+            touchXDisplay.textContent = x.toFixed(2);
+            touchYDisplay.textContent = y.toFixed(2);
+
+            isDrawing = true; 
+            draw(x, y);
+        });
+
+        canvas.addEventListener('touchmove', function(event) {
+            eventTypeDisplay.textContent = 'touchmove';
+
+            if (!isDrawing) return; 
+
+            const touch = event.touches[0];
+            const x = touch.clientX - canvas.offsetLeft;
+            const y = touch.clientY - canvas.offsetTop;
+
+            touchXDisplay.textContent = x.toFixed(2);
+            touchYDisplay.textContent = y.toFixed(2);
+
+            draw(x, y); 
+            event.preventDefault(); 
+        });
+
+        canvas.addEventListener('touchend', function(event) {
+            eventTypeDisplay.textContent = 'touchend';
+            isDrawing = false; 
+        });
+
+        canvas.addEventListener('touchcancel', function(event) {
+            eventTypeDisplay.textContent = 'touchcancel';
+            isDrawing = false;
         });
 
 </script>
