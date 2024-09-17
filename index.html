@@ -6,5 +6,31 @@
 </head>
 <body>
 <h1>Hello world !</h1>
+
+<div id="demo"></div>
+
 </body>
+
+<script>
+function success(pos) {
+  var crd = pos.coords;
+
+  document.getElementById("demo").innerHTML = 
+    `Votre position actuelle est :<br/><br/>` +
+            `Latitude : ${crd.latitude}<br/>
+            Latitude : ${crd.latitude}<br/>
+            Longitude : ${crd.longitude}<br/>
+            Altitude : ${crd.altitude}<br/>
+            Précision : ${crd.accuracy}<br/>
+            Vitesse : ${crd.speed}<br/>
+            Timestamp : ${pos.timestamp}`;
+
+}
+
+function error(err) {
+  console.warn(`ERREUR (${err.code}): ${err.message}`);
+}
+
+navigator.geolocation.getCurrentPosition(success, error);
+</script>
 </html>
