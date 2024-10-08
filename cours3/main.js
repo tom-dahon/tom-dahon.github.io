@@ -9,6 +9,7 @@ scene.fog = new THREE.Fog(0xffffff, 0.1, 100);
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer();
+renderer.setClearColor(0xEFE3E0);
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
@@ -73,9 +74,9 @@ rainGeometry.setAttribute('position', new THREE.BufferAttribute(rainPositions, 3
 
 const rainMaterial = new THREE.PointsMaterial({
     color: 0xAAAAFF,
-    size: 0.1,
+    size: 0.5,
     transparent: true,
-    opacity: 0.5
+    opacity: 1
 });
 const rain = new THREE.Points(rainGeometry, rainMaterial);
 scene.add(rain);
@@ -98,6 +99,7 @@ function animate() {
     if (mixer) {
         mixer.update(0.01);
     }
+    controls.update();
 
     renderer.render(scene, camera);
 }
