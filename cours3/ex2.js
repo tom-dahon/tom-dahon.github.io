@@ -26,14 +26,16 @@
     cube.position.y = 0.5;
     cube.position.x = 2;
 
-    BABYLON.SceneLoader.Append("./public/models/behemot/", "scene.gltf", scene, function (scene) {
-        scene.getMeshByName("behemot").scaling = new BABYLON.Vector3(2, 2, 2);
-        scene.getMeshByName("behemot").position.y = 1;
-    });
 
-    BABYLON.SceneLoader.Append("./public/models/wolf/", "scene.gltf", scene, function (scene) {
-        scene.getMeshByName("wolf").scaling = new BABYLON.Vector3(5, 7, 8);
-    });
+        BABYLON.SceneLoader.ImportMeshAsync("", 'public/models/behemot/', "scene.gltf", scene).then(function (result) {
+            console.log(result,"result")
+            result.meshes[0].position.x = -1;
+        })
+
+        BABYLON.SceneLoader.ImportMeshAsync("", 'public/models/wolf/', "scene.gltf", scene).then(function (result) {
+            console.log(result,"result")
+            result.meshes[0].position.x = 5;
+        })
 
     // Créer une pluie
     const rainParticles = new BABYLON.ParticleSystem("particles", 2000, scene);
