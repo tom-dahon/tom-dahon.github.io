@@ -2,7 +2,7 @@ const map = L.map('map').setView([43.7102, 7.2620], 12);  // Centre sur Nice
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
-fetch("https://opendata.nicecotedazur.org/data/storage/f/2024-02-19T10%3A29%3A14.897Z/ev-equipement-opendata-2024-02.geojson")
+fetch("https://geo.api.gouv.fr/communes?codeDepartement=06&fields=nom,code,codesPostaux,siren,codeEpci,codeDepartement,codeRegion,population&format=geojson&geometry=centre")
     .then(response => response.json())
     .then(data => {
         // Ajouter les données GeoJSON sur la carte
